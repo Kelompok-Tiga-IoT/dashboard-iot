@@ -28,8 +28,8 @@ class Lamp extends AbstractSensors
         self::send('iot/sensor/lamp/' . $lamp_id, ['action' => 'off']);
     }
 
-    static function getStatus($lamp_id): void
+    static function getStatus($lamp_id): array
     {
-        self::send('iot/sensor/lamp/' . $lamp_id, ['action' => 'status']);
+        return self::receive('iot/sensor/lamp/' . $lamp_id);
     }
 }
