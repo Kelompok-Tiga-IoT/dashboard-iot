@@ -22,5 +22,19 @@ abstract class AbstractSensors
         MQTT::publish($topic, json_encode($data));
     }
 
+    static function receive(string $topic): array
+    {
+        $data = [];
+        $retrieve = MQTT::connection();
+        $retrieve->subscribe($topic, function ($topic, $message) use (&$data) {
+            $data = json_decode($message, true);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                $data = [];
+            }
+        });
+
+        return $data;
+    }
+
     abstract static function process(string $topic, array $data);
 }
